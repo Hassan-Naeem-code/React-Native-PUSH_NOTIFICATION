@@ -8,6 +8,7 @@ import {
   Text,
   StatusBar,
   FlatList,
+  TouchableOpacity
 } from 'react-native';
 import {
   Header,
@@ -36,6 +37,9 @@ export default class PushController extends Component {
         },
         (created) => console.log(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
       );
+      PushNotification.getChannels(function (channel_ids) {
+        console.log(channel_ids,"sjisduvgu"); // ['channel_id_1']
+      });
     let self = this;
     PushNotification.configure({
       // (optional) Called when Token is generated (iOS and Android)
@@ -133,7 +137,21 @@ export default class PushController extends Component {
                 </View>}
               {/* <LearnMoreLinks /> */}
             </View>
+           
           </ScrollView>
+          <TouchableOpacity onPress={()=>{
+            PushNotification.localNotification({
+                title:"new message",
+                message:"hello world",
+                largeIcon: "ic_launcher", // (optional) default: "ic_launcher". Use "" for no large icon.
+                largeIconUrl: "https://jeebajijee.pk/public/images/web-settings/1606916402abc.png", // (optional) default: undefined
+                vibrate: true, // (optional) default: true
+                vibration: 300,
+                channelId: "channel-id"
+            });
+          }}>
+              <Text>New Local notification</Text>
+            </TouchableOpacity>
         </SafeAreaView>
       </Fragment>
     );
